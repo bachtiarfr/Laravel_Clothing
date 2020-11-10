@@ -16,14 +16,24 @@ Route::get('/products', 'CustomerController@product');
 Route::get('/myvoucher', 'CustomerController@myVoucher');
 Route::get('/home', 'CustomerController@index');
 
+Route::get('/labeled_image/Bachtiar/1.jpg', 'CustomerController@get_labeled_image');
+Route::get('/labeled_image/Bachtiar/2.jpg', 'CustomerController@get_labeled_image2');
+
+Route::get('/labeled_image/Fajar/1.jpg', 'CustomerController@get_labeled_fajar');
+Route::get('/labeled_image/Fajar/2.jpg', 'CustomerController@get_labeled_fajar2');
+
+Route::get('/labeled_image/Bayu/1.jpg', 'CustomerController@get_labeled_bayu');
+Route::get('/labeled_image/Bayu/2.jpg', 'CustomerController@get_labeled_bayu2');
+
+
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 
     //customers layout
     Route::prefix('Dashboard')->group(function () {
-
         //products
         Route::resource('/Products', 'Dashboard\ProductController')->middleware('merchants');
+        Route::get('/Products/image/{id}', 'Dashboard\ProductController@get_image')->middleware('merchants');
         Route::post('/Products/create', 'Dashboard\ProductController@create')->middleware('merchants');
         Route::post('/Products/add', 'Api\ProductController@store')->middleware('merchants');
         Route::delete('/Products/delete/{id}', 'Api\ProductController@destroy')->middleware('merchants');

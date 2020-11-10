@@ -25,6 +25,43 @@ class CustomerController extends Controller
         return view('home', compact('reward', 'reward_list'));
     }
 
+    public function get_labeled_image() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Bachtiar/1.jpg';
+        return response()->file($path);
+
+    }
+
+    public function get_labeled_image2() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Bachtiar/2.jpg';
+        return response()->file($path);
+
+    }
+    
+
+    public function get_labeled_fajar() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Fajar/1.jpg';
+        return response()->file($path);
+
+    }
+
+    public function get_labeled_fajar2() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Fajar/2.jpg';
+        return response()->file($path);
+
+    }
+
+    public function get_labeled_bayu() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Bayu/1.jpg';
+        return response()->file($path);
+
+    }
+
+    public function get_labeled_bayu2() {
+        $path = 'E:\WEB DEVELOPMENT\Laravel_Clothing\public/labeled_images/Bayu/2.jpg';
+        return response()->file($path);
+
+    }
+
     public function product()
     {
         $products = Product::all();
