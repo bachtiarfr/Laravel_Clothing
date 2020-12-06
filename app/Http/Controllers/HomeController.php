@@ -7,6 +7,11 @@ use App\Reward;
 use App\Voucher;
 use Illuminate\Support\Facades\Auth;
 
+use App\Courier;
+use App\City;
+use App\Province;
+
+
 class HomeController extends Controller
 {
     /**
@@ -28,5 +33,25 @@ class HomeController extends Controller
             $reward = Reward::where('user_id', Auth::user()->id)->get();
         }
         return view('home', compact('reward', 'reward_list'));
+    }
+
+    public function getData() {
+        $couriers = Courier::pluck('title','code');
+        $provinces = Province::pluck('title','province_id');
+        return view('check_ongkir', compact('couriers', 'provinces'));
+    }
+
+    public function getCities($id) {
+        $city = City::where('province_id', $id)->pluck('title', 'city');
+        return json_encode($city);
+    }
+
+    public function submit(Request $request) {
+        $cost = RajaOngkir::ongkoskirim([
+            'origin' => $request->city_origin,
+            'destination' => $request->city_destination,
+            'weight' => $request->weight,
+            'courier' => $request->courier
+        ])->get();
     }
 }

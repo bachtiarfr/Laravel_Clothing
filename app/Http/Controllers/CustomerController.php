@@ -22,7 +22,7 @@ class CustomerController extends Controller
         if (Auth::check()) {
             $reward = Reward::where('user_id', Auth::user()->id)->get();
         }
-        return view('home', compact('reward', 'reward_list'));
+        return view('home', compact('reward_list'));
     }
 
     public function get_labeled_image() {
