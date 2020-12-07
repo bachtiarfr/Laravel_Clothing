@@ -80,7 +80,7 @@ class CartController extends Controller
     {
         $total = Cart::where('user_id', Auth::user()->id)->selectRaw('SUM((price * qty)) AS total')->first();
 
-        return view('cart', compact('cart', 'total'));
+        return view('cart', compact('total'));
     }
 
     /**

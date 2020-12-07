@@ -89,36 +89,117 @@
                                     </tr>
                                   </tbody>
                                 </table>
-              
-                                <div class="border p-3 mb-3">
-                                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
-              
-                                  <div class="collapse" id="collapsebank">
-                                    <div class="py-2">
-                                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
-                                    </div>
-                                  </div>
-                                </div>
-              
-                                <div class="border p-3 mb-3">
-                                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsecheque" role="button" aria-expanded="false" aria-controls="collapsecheque">Cheque Payment</a></h3>
-              
-                                  <div class="collapse" id="collapsecheque">
-                                    <div class="py-2">
-                                      <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
-                                    </div>
-                                  </div>
-                                </div>
-              
+
                                 <div class="border p-3 mb-5">
-                                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Paypal</a></h3>
+                                  <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapseCheckout" role="button" aria-expanded="false" aria-controls="collapseCheckout">Check Ongkir</a></h3>
               
-                                  <div class="collapse" id="collapsepaypal">
+                                  <div class="collapse" id="collapseCheckout">
                                     <div class="py-2">
+                                      <form class="form-horizontal form-ongkir" id="ongkir" method="POST" action="/submit_check_ongkir">
+                                        {{-- {{csrf_field()}} --}}
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Provinsi:</label>
+                                            <div class="col">
+                                                <select class="form-control" id="province_origin" name="province_origin" required="">
+                                                    <option value="">--Provinsi-- </option>
+                                                    @foreach ($provinces as $province => $value)
+                                                    <option value="{{$province}}">{{$value}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Kota Asal:</label>
+                                            <div class="col">
+                                                <select class="form-control" id="city_origin" name="city_origin" required="">
+                                                    <option>--Kota-- </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Provinsi Tujuan</label>
+                                            <div class="col">
+                                                <select class="form-control" id="province_destination" name="province_destination" required="">
+                                                    <option value="">--Provinsi-- </option>
+                                                    @foreach ($provinces as $province => $value)
+                                                    <option value="{{$province}}">{{$value}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Kota Tujuan</label>
+                                            <div class="col">
+                                                <select class="form-control" id="city_destination" name="city_destination" required="">
+                                                <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                            <label class="control-label col-sm-3">Kurir</label>
+                                            <div class="col">
+                                                <select class="form-control" id="courier" name="courier" required="">
+                                                    <option value="pos">POS INDONESIA</option>
+                                                    <option value="jne">JNE</option>
+                                                    <option value="tiki">TIKI</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Berat (Kg)</label>
+                                            <div class="col">
+                                                <input type="text" class="form-control" id="weight" name="weight" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-8">
+                                                <input type="button" class="btn btn-default form-check-ongkir" value="Cek Ongkir">
+                                            </div>
+                                        </div>
+                                    </form> 
+                                    <div class="panel panel-default">
+                                      <div class="panel-body">
+                                        <table width="100%">
+                                          <tr>
+                                            <td width="30%"><b>Kurir</b> </td>
+                                            <td>:</td>
+                                            <td class="show_courier"></td>
+                                          </tr>
+                                          <tr>
+                                            <td>Dari</td>
+                                            <td>:</td>
+                                            <td class="show_city_origin"></td>
+                                          </tr>
+                                          <tr>
+                                            <td>Tujuan</td>
+                                            <td>: </td>
+                                            <td class="show_city_destination"></td>
+                                          </tr>
+                                          <tr>
+                                            <td>Berat (Kg)</td>
+                                            <td>: </td>
+                                            <td class="show_weight"></td>
+                                          </tr>
+                                        </table>
+                                        <table class="table table-striped table-bordered ">
+                                          <thead> 
+                                            <tr>
+                                              <th>Nama Layanan</th>
+                                              <th>Tarif</th>
+                                              <th>Estimasi pengiriman</th>
+                                            </tr>
+                                          </thead>
+                                        <tbody class="show_data_cost">  
+                                        </tbody> 
+                                        </table>
+                                      </div>
+                                      </div>
                                       <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
                                     </div>
                                   </div>
                                 </div>
+
               
                                   <button type="submit" class="btn btn-primary btn-lg btn-block">Place Order</button>
                                 

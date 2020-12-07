@@ -13,6 +13,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Voucher;
 use App\Inventorie;
 
+
+
+use App\Courier;
+use App\City;
+use App\Province;
+use Kavist\RajaOngkir\Facades\RajaOngkir;
+
 class CustomerController extends Controller
 {
     public function index()
@@ -77,7 +84,11 @@ class CustomerController extends Controller
         }
         $total = Cart::where('user_id', Auth::user()->id)->selectRaw('SUM((price * qty)) AS total')->first();
 
-        return view('checkout', compact('cart', 'total'));
+        
+        $couriers = Courier::pluck('title','code');
+        $provinces = Province::pluck('title','provinces_id');
+
+        return view('checkout', compact('cart', 'total','couriers', 'provinces'));
     }
 
     public function transaction(Request $request)

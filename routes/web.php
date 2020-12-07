@@ -64,3 +64,8 @@ Route::group(['middleware' => ['auth']], function () {
     //trade point with voucher
     Route::post('/voucher/add', 'CustomerController@addVoucher');
 });
+
+// check ongkoskirim
+Route::get('/check_ongkir', 'HomeController@getData');
+Route::get('/province/{id}/cities', 'HomeController@getCities');
+Route::post('/submit_check_ongkir', 'HomeController@submit');

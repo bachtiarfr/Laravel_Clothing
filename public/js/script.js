@@ -5,6 +5,7 @@ $(document).ready(function () {
 
     })
 })
+
 function viewData() {
 
     $.get('/cart/customers', function (data) {
@@ -96,8 +97,111 @@ function viewData() {
     });
 }
 
+
 //add to cart
 $(document).ready(function () {
+
+    $('.form-check-ongkir').click(function() {
+        // console.log('checked');
+        var province_origin = $('#province_origin').val();
+        var city_origin = $('#city_origin').val();
+        var province_destination = $('#province_destination').val();
+        var city_destination = $('#city_destination').val();
+        var courier = $('#courier').val();
+        var weight = $('#weight').val();
+
+        var province_origin_text = $('#province_origin option:selected').text();
+        var city_origin_text = $('#city_origin option:selected').text();
+        var province_destination_text = $('#province_destination option:selected').text();
+        var city_destination_text = $('#city_destination option:selected').text();
+
+
+        var data = {
+            "_token": $('#token').val(),
+            'province_origin' : province_origin,
+            'city_origin' : city_origin,
+            'province_destination' : province_destination,
+            'city_destination' : city_destination,
+            'courier' : courier,
+            'weight' : weight,
+        }
+
+        // console.log('data ongkir', data);
+        var kode, nama, costs;
+
+        $.ajax({
+            url : '/submit_check_ongkir',
+            method : 'POST',
+            data : data,
+            success : function(result) {
+                console.log('all data', result);
+                nama = result[0].name 
+               
+                $.each( result, function( key, value ) {
+                    // alert( key + ": " + value );
+                    console.log('value', value);
+                    var table = '<tr><td>'+ value.description +'</td>';
+                    $.each(value.cost, function(key, val){
+                        table += '<td>'+'Rp. '+ val.value +'</td>';
+                        table += '<td>'+ val.etd+ ' hari' +'</td>';
+                    })
+                    table += '</tr>';
+                    $('.show_data_cost').append(table);
+                  });
+                $('.show_city_origin').html(city_origin_text + ',' + province_origin_text);
+                $('.show_city_destination').html(city_destination_text + ',' + province_destination_text);
+                $('.show_courier').html(nama);
+                $('.show_weight').html(weight);
+
+            }
+        })      
+        
+    })
+    
+    $('select[name="province_origin"]').on('change', function() {
+        let provinceId = $(this).val();
+        // console.log('chaged', provinceId);
+        if (provinceId) {
+        jQuery.ajax({
+            url: '/province/'+provinceId+'/cities',
+            type: "GET",
+            dataType:"json",
+            success:function(data) {
+            console.log('get province success');
+            $('select[name="city_origin"]').empty();
+            $.each(data, function(key, value) {
+                $('select[name="city_origin"]').append('<option value="'+key+'">'+value+'</option>');
+            });
+            },
+        });
+        } else {
+        $('select[name="city_origin"]').empty();
+        }
+    });
+    
+    $('select[name="province_destination"]').on('change', function() {
+        let provinceId = $(this).val();
+        if (provinceId) {
+        jQuery.ajax({
+            url:'/province/'+provinceId+'/cities',
+            type:"GET",
+            dataType:"json",
+            success:function(data) {
+            $('select[name="city_destination"]').empty();
+            $.each(data, function (key, value) {
+                $('select[name="city_destination"]').append('<option value="'+key+'">'+value+'</option>');
+            });
+            },
+        });
+        } else {
+            console.log('not oke');
+        $('select[name="city_destination"]').empty();
+        }
+    });
+
+    
+    
+
     console.log('ready');
 
     viewData();
