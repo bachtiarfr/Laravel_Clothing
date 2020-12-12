@@ -157,7 +157,7 @@
                                                 <input type="button" class="btn btn-default form-check-ongkir" value="Cek Ongkir">
                                             </div>
                                         </div>
-                                    </form> 
+                                      </form> 
                                     <div class="panel panel-default">
                                       <div class="panel-body">
                                         <table width="100%">
@@ -199,16 +199,11 @@
                                     </div>
                                   </div>
                                 </div>
-
-              
                                   <button type="submit" class="btn btn-primary btn-lg btn-block">Place Order</button>
-                                
                               </form>
-              
                               </div>
                             </div>
                           </div>
-              
                         </div>
                       </div>
                 </div>

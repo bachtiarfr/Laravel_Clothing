@@ -115,7 +115,6 @@ $(document).ready(function () {
         var province_destination_text = $('#province_destination option:selected').text();
         var city_destination_text = $('#city_destination option:selected').text();
 
-
         var data = {
             "_token": $('#token').val(),
             'province_origin' : province_origin,
@@ -127,7 +126,7 @@ $(document).ready(function () {
         }
 
         // console.log('data ongkir', data);
-        var kode, nama, costs;
+        var nama;
 
         $.ajax({
             url : '/submit_check_ongkir',
@@ -139,7 +138,7 @@ $(document).ready(function () {
                
                 $.each( result, function( key, value ) {
                     // alert( key + ": " + value );
-                    console.log('value', value);
+                    // console.log('value', value);
                     var table = '<tr><td>'+ value.description +'</td>';
                     $.each(value.cost, function(key, val){
                         table += '<td>'+'Rp. '+ val.value +'</td>';

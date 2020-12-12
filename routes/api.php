@@ -24,3 +24,5 @@ Route::resource('/Categorie', 'Api\CategorieController', [
     'except' => ['create', 'edit']
 ]);
 Route::resource('/Cart', 'Api\CartController');
+
+Route::get('/xendit/va/list', 'Api\Payment\XenditController@getListVirtualAccounts');
