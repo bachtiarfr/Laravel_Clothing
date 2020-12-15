@@ -19,4 +19,21 @@ class XenditController extends Controller
             'data' => $getVABanks
         ])->setStatusCode(200);
     }
+
+    public function createVirtualAccount(Request $request) {
+        Xendit::setApiKey($this->token);
+
+        $params = ["external_id" => \uniqid(),
+            "bank_code" => "MANDIRI",
+            "name" => "Bachtiar"
+        ];
+
+        // dd($params);
+        $createVA = \Xendit\VirtualAccounts::create($params);
+
+        return response()->json([
+            'data' => $createVA
+        ])->setStatusCode(200);
+        
+    }
 }

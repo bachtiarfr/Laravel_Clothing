@@ -26,3 +26,4 @@ Route::resource('/Categorie', 'Api\CategorieController', [
 Route::resource('/Cart', 'Api\CartController');
 
 Route::get('/xendit/va/list', 'Api\Payment\XenditController@getListVirtualAccounts');
+Route::post('/xendit/va/invoice', 'Api\Payment\XenditController@createVirtualAccount');
