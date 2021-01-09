@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<head>
+  <script type="text/javascript"
+          src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key="<CLIENT-KEY>"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -8,7 +14,15 @@
             <hr>
             <div class="card">
                 <div class="card-body">
-                  <form action=" {{url('/checkout/transaction')}} " method="POST" >
+                  {{-- <form id="payment-form" method="post" action="snapfinish">
+                    <input type="hidden" name="_token" value="{!! csrf_token() !!}">
+                    <input type="hidden" name="result_type" id="result-type" value=""></div>
+                    <input type="hidden" name="result_data" id="result-data" value=""></div>
+                  </form> --}}
+                  {{-- <button id="pay-button">Pay!</button> --}}
+
+                  {{-- <form action=" {{url('/checkout/transaction')}} " method="POST"> --}}
+                    <form id="payment-form" method="post" action="snapfinish">
                     @csrf
                     <div class="row">
                       <div class="col-md-6 mb-5 mb-md-0">
@@ -79,13 +93,13 @@
                                   <tbody>
                                     @foreach ($cart as $item)
                                     <tr>
-                                      <td>{{$item->product_name}} <strong class="mx-2">x</strong> {{$item->qty}}</td>
+                                      <td id="product_name">{{$item->product_name}} <strong class="mx-2">x</strong> {{$item->qty}}</td>
                                       <td>{{$item->price * $item->qty }}</td>
                                     </tr>
                                     @endforeach
                                     <tr>
                                       <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                                      <td class="text-black font-weight-bold"><strong>{{$total->total}}</strong></td>
+                                      <td class="text-black font-weight-bold"><strong><span id="total_order">{{$total->total}}</span></strong></td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -199,7 +213,8 @@
                                     </div>
                                   </div>
                                 </div>
-                                  <button type="submit" class="btn btn-primary btn-lg btn-block">Place Order</button>
+                                
+                                  <button id="pay-button" type="button" class="btn btn-primary btn-lg btn-block">Place Order</button>
                               </form>
                               </div>
                             </div>
@@ -211,4 +226,78 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+  
+  $('#pay-button').click(function (event) {
+    event.preventDefault();
+    $(this).attr("disabled", "disabled");
+
+    var name = $('#name').val();
+    var address = $('#address').val();
+    var city = $('#city').val();
+    var email = $('#email').val();
+    // phone = $('#phone').val();
+    var phone = $('#phone').val();
+    var product_name = $('#product_name').text();
+    var total_order = $('#total_order').text();
+    
+    var dataPayment = {
+      name : name,
+      address : address,
+      city : city,
+      email : email,
+      phone : phone,
+      product_name : product_name,
+      total_order : total_order,
+
+    }
+    // console.log('payment dataPayment', dataPayment);
+  
+  $.ajax({
+    
+    url: './snaptoken',
+    method : 'post',
+    data : {_token:"{{ csrf_token() }}",dataPayment},
+    cache: false,
+
+    success: function(dataPayment) {
+      //location = data;
+      console.log('data payment', dataPayment);
+      // console.log('token = '+data);
+      
+      var resultType = document.getElementById('result-type');
+      var resultData = document.getElementById('result-data');
+
+      function changeResult(type,dataPayment){
+        // $("#result-type").val(type);
+        // $("#result-data").val(JSON.stringify(dataPayment));
+        //resultType.innerHTML = type;
+        //resultData.innerHTML = JSON.stringify(data);
+      }
+
+      snap.pay(dataPayment, {
+        onSuccess: function(result){
+          changeResult('success', result);
+          console.log(result.status_message);
+          console.log(result);
+          $("#payment-form").submit();
+        },
+        onPending: function(result){
+          changeResult('pending', result);
+          console.log(result.status_message);
+          $("#payment-form").submit();
+        },
+        onError: function(result){
+          changeResult('error', result);
+          console.log(result.status_message);
+          $("#payment-form").submit();
+        }
+      });
+    }
+  });
+});
+
+</script>
+
 @endsection
+ 

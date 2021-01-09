@@ -42,6 +42,6 @@ class LoginController extends Controller
             return redirect()->intended('/Dashboard/Products');
         }
 
-        return redirect()->intended('/');
+        return redirect()->intended('/home');
     }
 }

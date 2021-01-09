@@ -52,6 +52,32 @@ class CheckoutController extends Controller
         $sales->alamat = $request->input('address');
         $sales->save();
 
+        $this->initPaymentGateway();
+        $customerDetails = [
+            'first_name' => $sales->nama, 
+            'last_name' => $sales->nama,
+            'email' => $sales->email,
+            'phone' => $sales->phone, 
+        ];
+
+        $params = [
+            'enable_payments' => \App\Payment::PAYMENT_CHANNELS,
+            'transaction_details' => [
+                'order_id' => $sales->id,
+                'gross_amount' => 1000,
+            ],
+            'customer_destails' => $customerDetails,
+            'expiry' => [
+                'start_time' => date('Y-m-d H:i:s T'),
+                'unit' => \App\Payment::EXPIRY_DURATION,
+                'duration'  => \App\Payment::EXPIRY_UNIT
+            ],
+
+        ];
+        
+        $snap = \Midtrans\Snap::createTransaction($params);
+        dd($snap);
+
         $products = Cart::all();
 
         $sale_items = new SaleItems();
@@ -95,12 +121,36 @@ class CheckoutController extends Controller
             }
         }
 
-
-
-
         Session::flash("success", "berhasil Menambah Product");
         DB::table('carts')->where('user_id', $user->id)->delete();
         return redirect('/products');
+    }
+
+    
+    public function _generatePaymentToken($sales) {
+        $this->initPaymentGateway();
+        $customerDetails = [
+            'first_name' => $sales->nama, 
+            'last_name' => $sales->nama,
+            'email' => $sales->email,
+            'phone' => $sales->phone, 
+        ];
+
+        $params = [
+            'enable_payments' => \App\Payment::PAYMENT_CHANNELS,
+            'transaction_details' => [
+                'order_id' => $sales->id,
+                'gross_amount' => 1000,
+            ],
+            'customer_destails' => $customerDetails,
+            'expiry' => [
+                'start_time' => date('Y-m-d H:i:s T'),
+                'unit' => \App\Payment::EXPIRY_DURATION,
+                'duration'  => \App\Payment::EXPIRY_UNIT
+            ],
+
+        ];
+        dd($params);
     }
 
     /**
@@ -147,4 +197,5 @@ class CheckoutController extends Controller
     {
         //
     }
+
 }

@@ -14,6 +14,7 @@
         "kavist/rajaongkir": "^1.1",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "midtrans/midtrans-php": "^2.3",
         "xendit/xendit-php": "^2.6"
     },
     "require-dev": {

@@ -45,7 +45,7 @@
                           </ul>
                           
                         {{-- carts icon --}}
-                          <img src="{{asset('img/cart-img.png')}}" class="m-2 mr-3 Cart" width="25" alt="image">
+                          <img src="{{asset('img/cart-img.png')}}" class="m-2 mr-3 Cart" style="cursor: pointer" width="25" alt="image">
 
                           <a class="btn btn-outline-success m-2 mr-3" href="{{ route('login') }}">{{ __('Login') }}</a>
                           @if (Route::has('register'))
@@ -66,7 +66,7 @@
                                     
                                 </ul>
                           </div>
-                        <img src="{{asset('img/cart-img.png')}}" class="m-2 mr-3 Cart" width="25" alt="image">
+                        <img src="{{asset('img/cart-img.png')}}" class="m-2 mr-3 Cart" style="cursor: pointer"  width="25" alt="image">
                           <div class="nav-item dropdown">
                                 <a id="nav-item dropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
