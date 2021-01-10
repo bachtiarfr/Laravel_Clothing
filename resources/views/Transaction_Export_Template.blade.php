@@ -4,9 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          <a href="{{url ('Dashboard/Transaction/ExportPDF')}}" class="btn btn-danger">Export PDF</a>
-            <div class="card">
-                
+            <div class="card">                
                 <table class="table">
                     <thead>
                       <tr>

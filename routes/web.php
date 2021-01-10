@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/Products/edit/{id}', 'Dashboard\ProductController@edit')->middleware('merchants');
         Route::put('/Products/update/{id}', 'Api\ProductController@update')->middleware('merchants');
         Route::get('/Transaction', 'Dashboard\TController@index')->name('transaction list in dashboard')->middleware('merchants');
+        Route::get('/Transaction/ExportPDF', 'Dashboard\TController@exportPDF')->name('export transaction data to pdf')->middleware('merchants');
 
         //categorie
         Route::resource('/Categories', 'Dashboard\CategorieController')->middleware('merchants');
